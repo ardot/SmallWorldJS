@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en">
+  <head>
+    <!--Favicon Image Code -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="57x57" href="img/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/apple-touch-icon-152x152.png">
+    <link rel="icon" type="image/png" href="img/favicon-196x196.png"  sizes="196x196">
+    <link rel="icon" type="image/png" href="img/favicon-160x160.png"  sizes="160x160">
+    <link rel="icon" type="image/png" href="img/favicon-96x96.png"  sizes="96x96">
+    <link rel="icon" type="image/png" href="img/favicon-16x16.png"  sizes="16x16">
+    <link rel="icon" type="image/png" href="img/favicon-32x32.png"  sizes="32x32">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="msapplication-TileImage" content="img/mstile-144x144.png">
+    <meta property="og:image" content="http://timlenardo.com/SmallWorldBase/img/GlobeROUNDED.png">
+    <meta name="Description" content="It's a small world - Find the friendships that you didn't know about!">
+    <meta name="Keywords" content="small, world, unexpected, friendships, unlikely, friends">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <title> The Small World App </title>
+    <div id="fb-root"></div>
+    <!--FACEBOOK SDK -->
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=686875978043083";
+      fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script> 
+    <link href="css/bootstrap-responsive.min.css"  rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css"  rel="stylesheet" type="text/css">
+    <link href="css/jumbotron-narrow.css"  rel="stylesheet" type="text/css">
+    <link href="css/progressBar.css"  rel="stylesheet" type="text/css">
+    
+    <script src="js/bootstrap.js"  type="text/javascript"></script>
+    <link href="css/DT_bootstrap.css"  rel="stylesheet" type="text/css">
+    <script src="js/jquery.dataTables.js"  type="text/javascript"></script>
+    <script src="js/DT_bootstrap.js"  type="text/javascript"></script>
+    <script src="js/minheap.js"  type="text/javascript"></script>
+    <style>
+      table {
+        table-layout: fixed;
+        border-bottom: 1px solid #e1e1e8;
+        border: 1px solid #e1e1e8;
+        background-color: #fcfcfc;
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <!-- AddThis Smart Layers BEGIN -->
+    <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bc94d84b9db306"></script>
+    <script type="text/javascript">
+      addthis.layers({
+        'theme' : 'light',
+        'share' : {
+          'position' : 'right',
+          'numPreferredServices' : 5
+        }, 
+        'follow' : {
+          'services' : [
+            {'service': 'facebook', 'id': 'thesmallworldapp'},
+            {'service': 'twitter', 'id': 'smallworldapp'}
+          ]
+        }   
+      });
+    </script>
+    <!-- AddThis Smart Layers END -->
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="/how">How It Works</a></li>
+        </ul>
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+        </ul>
+        <h2 class="text-muted"> The Small World App</br><small>#smallworld</small></h2>
+      </div>
+      
+      <div class="jumbotron">
+        <h1>It's a small world...</h1>
+        <p class="lead">
+          Find the friendships that you didn't know about
+        </p>
+        <p>
+          <table id="results" class="table table-hover">
+            <tbody>
+
+            </tbody>
+          </table>
+        </p>
+        <p>
+          <a id="less" onclick="previousPage()" style="display:none">
+            previous
+          </a>
+          <a id="more" onclick="nextPage()" style="display:none">
+            next 
+          </a>
+        </p>
+        <p>
+          <a id="find" class="btn btn-lg btn-warning" href="#" role="button">Find Now!</a>
+        </p>
+        <p>
+          <div id="progressBar" style="display:none"><div></div></div>
+        </p>
+        <h3 id="loading" style="display:none">
+          Loading Results...
+          <!--img id="loading" style="display:none" src="img/005.gif"  alt="loading"/-->
+        </h3>
+        <p id="patient" style="display:none">
+          Scraping Mutual Friendships... 
+        </p>
+     </div>
+       <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=686875978043083";
+          fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+        </script>
+      <div class="row marketing">
+          <div class="center fb-like"  data-href="https://www.facebook.com/thesmallworldapp" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+      </div>  
+      <div class="footer">
+        <p><a href="how/"> How it works </a></p>
+        <p>© Timothy E. Lenardo 2014</p>
+      </div>
+      <form id="oauth" method="POST">
+        <input type="hidden" id="token" name="title" value=""/>
+      </form>
+    </div> <!-- /container -->
+    
+    <!--This scrypt handles the original progress bar and then loading wheel.  -->
+    <script>
+      var cur_percent=0; 
+      function progressBarRecursive(percent) {
+        if (percent > 100) {
+          $('#progressBar').css('display', 'none');
+          $('#loading').css('display', '');
+          $("#patient").html("(Be patient... This can take a few minutes if you have a lot of friends)");
+          return;
+        }
+        progress(percent); //, $('#progressBar'));
+        setTimeout(function(){progressBarRecursive(percent + 1);}, 70);
+      }
+
+      function progress(percent) {
+        percent_floor = Math.ceil(percent);
+        if (percent_floor != cur_percent) {
+          cur_percent = percent_floor;
+          var progressBarWidth = cur_percent * $('#progressBar').width() / 100;
+          $('#progressBar').find('div').animate({ width: progressBarWidth }, 90).html(cur_percent + "%&nbsp;");
+        }
+      }
+    </script>
+    
+
+
+    <script>
+       var friends = []; 
+       var indeces = {};
+       var mutuals = {};
+       var checked = {};
+       var num_received = 0;
+       //var f1;
+       //var f2;
+       //var item = {};
+
+       function share() {
+          console.log("Clicked!");
+          FB.ui({
+            method: 'feed',
+            picture: 'http://timlenardo.com/SmallWorldBase/img/GlobeROUNDED.png',
+            link: 'http://timlenardo.com/SmallWorldBase',
+            name: 'I had no idea these two were friends!',
+            caption: 'The Small World App',
+            description: 'Find the friendships you didn\'t know about!',
+          }, function(response){});
+       }
+      
+       $( "#find" ).click(function() {
+
+         $("#find").css('display','none');
+         $("#progressBar").css('display','');
+         $("#patient").css('display','');
+         setTimeout(function(){ progressBarRecursive(0); }, 70)
+         
+         FB.login(function(response) {
+          if (response.authResponse) {
+            FB.api('/me/friends?fields=name,id,picture,link', function(response) {
+              if(response.data) {
+                counter = 0;
+                $.each(response.data,function(index,friend) {
+                  var id = friend.id;
+                  item = {};
+                  item['url'] = friend.picture.data.url;
+                  item['name'] = friend.name;
+                  item['id'] = id;
+                  item['link'] = friend.link;
+                  friends.push(item);
+                  counter_string = counter.toString();
+                  indeces[id] = counter_string;
+                  counter = counter + 1;
+                });
+                getMutual();
+              } else {
+                console.log("Error");
+              }
+            });
+          } 
+        });
+       });
+
+       function sendBatch(batch, ids) {
+         console.log("Sending Batch!");
+         var batch_request = "[" +  batch.toString() + "]";
+         FB.api('/', 'POST', {
+           'batch': batch_request
+         }, function (response) {
+            //console.log("Got response!");
+            var counter = 0;
+            $.each(response,function(index,mutual_list) {
+              var mutual_list = (JSON.parse(mutual_list.body)).data;
+              mutuals[ids[counter]] = mutual_list; 
+              counter = counter + 1;
+            });
+            num_received = num_received + 1;
+            console.log("Done Processing");
+         });
+
+       }
+       function specialSauce(list_one, list_two) {
+        // Counters 
+        cn_one = 0;
+        cn_two = 0;
+       
+        matches = 0;
+        mismatches = 0;
+        
+        // Run through until no more matches could occur. 
+        while (cn_one < list_one.length && cn_two < list_two.length) {
+          id1 = parseInt(list_one[cn_one]['id']);
+          id2 = parseInt(list_two[cn_two]['id']);
+          if (id1 == id2) {
+            matches = matches + 1;
+            cn_one = cn_one + 1;
+            cn_two = cn_two + 1;
+          } else if (id1 > id2) { 
+            mismatches = mismatches + 1;
+            cn_two = cn_two + 1;
+          } else {
+            mismatches = mismatches + 1;
+            cn_one = cn_one + 1;
+          }
+        }
+
+        mismatches = mismatches + (list_one.length - cn_one) + (list_two.length - cn_two);
+        return (1 + matches) / mismatches;
+      }
+
+       
+       function getMutual() {
+          var batch_size = 45;
+          var counter = 0;
+          var batch = [];
+          var ids = [];
+          batches_sent = 0;
+
+          for (var i = 0; i < friends.length; i++) {
+            if (counter == batch_size) {
+              sendBatch(batch, ids);
+              batch=[];
+              ids=[];
+              counter = 0;
+              batches_sent = batches_sent + 1;
+            }
+            var url = '\'me/mutualfriends/' + friends[i]['id'] + '\'';
+            batch.push("{method: 'GET', relative_url: " + url + "}");
+            ids.push(friends[i]['id']);
+            counter++;
+          }
+          sendBatch(batch, ids);
+          batches_sent = batches_sent + 1;
+          setTimeout(function(){waitForResponse(batches_sent);},5000);
+        }
+
+        function waitForResponse(batches_sent) {
+          if (num_received < batches_sent) {
+            console.log("Not yet!" + num_received);
+            setTimeout(function(){waitForResponse(batches_sent);},1000);
+          } else {
+            $('#progressBar').css('display', 'none');
+            $('#loading').css('display', '');
+            $("#patient").html("(Be patient... This can take a few minutes if you have a lot of friends)");
+          
+            setTimeout(runSauce, 5);
+          }
+        }
+        
+        function runSauce() {
+          
+          counter = 0;
+          var f1;
+          var heapq = new MinHeap(null, function(item1, item2){
+            return item1.s == item2.s ? 0 : item1.s < item2.s ? -1 : 1;
+          });
+          for(var key in mutuals){
+            f1 = key;
+            //console.log("F1: " + f1);
+            mutual_list_one = mutuals[f1];
+            for (var mutual in mutual_list_one) {
+              f2 = mutual_list_one[mutual]['id'];
+              unique = f1 + " " + f2;
+              reverse = f2 + " "  + f1;
+              if (!(reverse in checked)) { 
+                mutual_list_two = mutuals[f2];
+                item = {};
+                var s = specialSauce(mutual_list_one, mutual_list_two);
+                if (f1 != "undefined") {
+                  item['s'] = s;
+                  item['f1'] = f1;
+                  item['f2'] = f2;
+                  heapq.push(item);
+                }
+                checked[unique] = 1;
+              }
+            }
+            //percent = counter / friends.length * 100;
+            //$.when(progress(percent)).then();
+            //counter = counter + 1;
+          }
+          $('#loading').css('display', 'none');
+          $('#patient').css('display', 'none');
+          $('#more').css('display', '');
+          
+
+
+          for (var i = 0; i < 100; i++) {
+            current = heapq.pop();
+            heapq.pop();
+            f1 = current['f1'];
+            f2 = current['f2'];
+            ind1 = indeces[f1];
+            ind2 = indeces[f2];
+            
+            s = Math.floor(current['s'] * 1000000) / 1000000;
+            friend1 = friends[ind1];
+            friend2 = friends[ind2];
+            
+            if (i < 10) {
+              row = ('<tr onclick="share()" id="'+ i + '">');
+            } else {
+              row = ('<tr onclick="share()" id="' + i + '" style="display:none">');
+            }  
+            row=row.concat('<td width="10%"><h2>#' + (i+1) + '</h2></td>');
+            row=row.concat('<td width="8%"><img class="img-rounded" src="' + friend1['url'] + '" alt="friend_one"/></td>');
+            row=row.concat('<td width="18%"><h5><a href="' + friend1['link'] + '" target="blank_">' + friend1['name'] + '</a></h5></td>');
+            row=row.concat('<td width="15%"><p> </br> is friends with... </p></td>');
+            row=row.concat('<td width="7%"><img class="img-rounded" src="' + friend2['url'] +'" alt="friend_two"/></td>');
+            row=row.concat('<td width="18%"><h5><a href="' + friend2['link'] + '" target="blank_">'+ friend2['name']+'</a> </h5></td>');
+            row=row.concat('<td width="16%"><p> <b> Unexpectedness:</b></br>'+ s +'</p></td></tr>');  
+            $('#results > tbody:last').append(row);
+          }
+       }
+    </script> 
+
+    <!-- This script handles tha pagination -->
+    <script>
+        var current_page = 0;
+
+        function previousPage() {
+          if (current_page > 0) {
+           for(var i = current_page + 9; i > current_page-11; i--){
+             var name = "#" + i;
+             if (i < current_page) {
+              $(name).css('display','');
+             } else {
+              $(name).css('display','none');
+             }
+           }
+         }
+         $("#more").css('display','');
+         
+         // Remove less when on first page
+         current_page = current_page - 10;
+         if (current_page == 0) {
+          $("#less").css('display','none');
+         }
+         document.body.scrollTop = document.documentElement.scrollTop = 0;
+        }
+        function nextPage() {
+         
+         if (current_page < 90) {
+           for(var i = current_page; i < current_page+20; i++){
+             var name = "#" + i;
+             if (i < (current_page + 10)) {
+              $(name).css('display','none');
+             } else {
+              $(name).css('display','');
+             }
+           }
+         }
+         $("#less").css('display','');
+         // Remove more when on last page
+         current_page = current_page + 10;
+         if (current_page == 90) {
+          $("#more").css('display','none');
+         }
+         document.body.scrollTop = document.documentElement.scrollTop = 0;
+        }
+     </script>
+  </body>
+</html>
+
